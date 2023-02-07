@@ -3,6 +3,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import signUpForVisit from "../api/visit";
 
 const styles = {
   container: {
@@ -30,7 +31,13 @@ class VisitForm extends Component {
     });
   }
   handleSubmit(data) {
-    console.log(JSON.stringify(data));
+    try {
+      signUpForVisit(data).then((response) => {
+        console.log(response);
+      });
+    } catch (err) {
+      console.error(err);
+    }
   }
   render() {
     const initialValues = {
@@ -61,7 +68,7 @@ class VisitForm extends Component {
                   </Col>
                 </Row>
                 <Row>
-                  <Col >
+                  <Col>
                     <Field
                       name="firstName"
                       type="text"
