@@ -4,7 +4,7 @@ function signUpForVisit(data) {
   if (data.firstName && data.roomNumber) {
     const { firstName, roomNumber } = data;
     return axios
-      .post("http://localhost:8080/visit/create", {
+      .post("http://localhost:8080/visit", {
         firstName,
         roomNumber,
       })
