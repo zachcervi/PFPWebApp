@@ -4,6 +4,8 @@ import * as Yup from "yup";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import signUpForVisit from "../api/visit";
+import PawsForPatientsLogo from "../assets/PFPLogo.png";
+import Image from "react-bootstrap/Image";
 
 const styles = {
   container: {
@@ -16,6 +18,30 @@ const styles = {
   },
   label: {
     fontSize: "1px",
+  },
+  logo: {
+    width: "350px",
+    height: "350px",
+    
+  },
+  input: {
+    minHeight: "30px",
+    minWidth: "300px",
+    borderRadius: "5px",
+    marginTop: "10px",
+    marginBottom: "10px",
+    border: "none",
+    boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+  },
+  submit: {
+    backgroundColor: "#14a647",
+    boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+    color: "white",
+    border: "none",
+    borderRadius: "5px",
+    padding: "10px",
+    fontSize: "20px",
+    marginTop: 10,
   },
 };
 
@@ -34,6 +60,10 @@ class VisitForm extends Component {
     try {
       signUpForVisit(data).then((response) => {
         console.log(response);
+        const { data, status } = response;
+        if (status === 200) {
+          alert(`${data.message}`);
+        }
       });
     } catch (err) {
       console.error(err);
@@ -46,6 +76,8 @@ class VisitForm extends Component {
     };
     return (
       <div style={styles.container}>
+        <Image fluid={true} style={styles.logo} src={PawsForPatientsLogo} />
+
         <Row>
           <p>
             Please fill the form out below if you would like a visit from a
@@ -61,19 +93,16 @@ class VisitForm extends Component {
         >
           {({ errors, touched }) => (
             <Form>
-              <div className="form-group">
-                <Row>
-                  <Col sm={12} md={12} lg={12}>
-                    <label>First Name</label>
-                  </Col>
-                </Row>
+              <div className="form-group mb-3">
                 <Row>
                   <Col>
                     <Field
                       name="firstName"
                       type="text"
+                      style={styles.input}
+                      placeholder="First Name"
                       className={
-                        "form-control" +
+                        "form-control-lg" +
                         (errors.firstName && touched.firstName
                           ? " is-invalid"
                           : "")
@@ -92,17 +121,13 @@ class VisitForm extends Component {
                 <Row>
                   <Col>
                     {" "}
-                    <label> Room Number </label>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    {" "}
                     <Field
+                      style={styles.input}
+                      placeholder="Room Number"
                       name="roomNumber"
                       type="number"
                       className={
-                        "form-control" +
+                        "form-control-lg" +
                         (errors.roomNumber && touched.roomNumber
                           ? " is-invalid"
                           : "")
@@ -118,7 +143,11 @@ class VisitForm extends Component {
                 </Row>
               </div>
               <div className="form-group">
-                <button type="submit" className="btn btn-primary">
+                <button
+                  type="submit"
+                  style={styles.submit}
+                  className="btn btn-primary"
+                >
                   Submit
                 </button>
               </div>
