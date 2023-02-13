@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import VisitForm from "./components/VisitForm";
 
