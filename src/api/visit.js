@@ -4,7 +4,7 @@ function signUpForVisit(data) {
   if (data.firstName && data.roomNumber) {
     const { firstName, roomNumber } = data;
     return axios
-      .post("http://localhost:8080/visit", {
+      .post("https://pawsforpatients-16f0a.web.app/visit", {
         firstName,
         roomNumber,
       })

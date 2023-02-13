@@ -22,7 +22,6 @@ const styles = {
   logo: {
     width: "350px",
     height: "350px",
-    
   },
   input: {
     minHeight: "30px",
@@ -43,12 +42,21 @@ const styles = {
     fontSize: "20px",
     marginTop: 10,
   },
+  errorMessage: {
+    color: "red",
+    textTransform: "uppercase",
+  },
 };
 
 class VisitForm extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
+
+    this.state = {
+      message: "",
+      error: false,
+    };
   }
   validationSchema() {
     return Yup.object().shape({
@@ -56,15 +64,18 @@ class VisitForm extends Component {
       roomNumber: Yup.number().required("Room Number is required."),
     });
   }
-  handleSubmit(data) {
+  handleSubmit(data, { resetForm }) {
     try {
-      signUpForVisit(data).then((response) => {
-        console.log(response);
-        const { data, status } = response;
-        if (status === 200) {
-          alert(`${data.message}`);
+      signUpForVisit(data).then((resp) => {
+        if (resp && resp.status === 200) {
+          const { data } = resp;
+          this.setState({ message: `${data}`, error: false });
+        } else {
+          const { response } = resp;
+          this.setState({ message: `${response.data}`, error: true });
         }
       });
+      resetForm();
     } catch (err) {
       console.error(err);
     }
@@ -85,6 +96,16 @@ class VisitForm extends Component {
             daily.
           </p>
         </Row>
+        <Row>
+          <p>
+            Please be advised that if you are in an isolation room, the therapy
+            dog teams will not be able to visit.
+          </p>
+        </Row>
+        {!this.state.error && <p>{this.state.message}</p>}
+        {this.state.error && (
+          <p style={styles.errorMessage}>{this.state.message}</p>
+        )}
 
         <Formik
           initialValues={initialValues}
